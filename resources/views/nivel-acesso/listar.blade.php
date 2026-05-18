@@ -300,21 +300,57 @@
             <div class="container-xxl flex-grow-1 container-p-y">
                 <div class="col-md-12">
                   <div class="card">
-                    <h5 class="card-header text-center">Cadastro de Nivel de Acesso </h5>
+                    <h5 class="card-header text-center">Listagem de Niveis de Acesso 📃</h5>
                     <div class="card-body">
-                      <form action="{{route('nivel-acesso.salvar')}}" method="POST">
-                        @csrf
-                      <div>
-                        <label for="nivelAcesso" class="form-label">Nivel de Acesso</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="nivelAcesso"
-                          name="nivelAcesso"
-                          placeholder="Exemplo: (Administrador | Visitante | Aluno)" />   
-                          <button type="submit" class="btn btn-primary col-md-12 mt-4">Cadastrar</button>
-                        </div>
-                      </form>
+                      <div class="card">
+                <h5 class="card-header">Listagem</h5>
+                <div class="table-responsive text-nowrap">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Nível de Acesso</th>
+                        <th>Criado em</th>
+                        <th>Atualizado em</th>
+                        <th>Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                    @forelse($nivelAcesso as $nivel)
+                      <tr>
+                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{$nivel->nivel_acesso}}</strong></td>
+                        <td>
+                            {{ $nivel->created_at }}
+                        </td>
+                        <td><span class="badge bg-label-primary me-1">{{$nivel->updated_at}}</span></td>
+                        <td>
+                          <div class="dropdown">
+                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                              <i class="bx bx-dots-vertical-rounded"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item" href="javascript:void(0);"
+                                ><i class="bx bx-edit-alt me-1"></i> Editar</a
+                              >
+                              <form action="{{ route('nivel-acesso.deletar', $nivel->id) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja deletar este registro?');">
+                                            @csrf
+                                            @method('DELETE')
+
+                                            <button type="submit" class="dropdown-item">
+                                                <i class="bx bx-trash me-1"></i> Deletar
+                                            </button>
+                                        </form>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                      @empty
+                      <tr>Nenhum Nível de Acesso Encontrado</tr>
+                      @endforelse
+                    </tbody>
+                  </table>
+
+                </div>
+              </div>
                       </div>
                     </div>
                   </div>
@@ -425,3 +461,4 @@
     @endif
   </body>
 </html>
+
